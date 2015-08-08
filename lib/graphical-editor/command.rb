@@ -55,6 +55,10 @@ module GraphicalEditor
       return unless check_dimensions(args, 3)
       cell = Cell.new *check_integers(args[0..1])
       return unless cell.row
+      unless @image.in? cell
+        puts 'ERROR: Pixel out of bounds'
+        return
+      end
       @image.set_colour(cell, args[2])
     end
 

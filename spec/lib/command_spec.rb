@@ -47,7 +47,7 @@ RSpec.describe GraphicalEditor::Command do
   end
 
   describe '#L' do
-    let(:image) { instance_double('GraphicalEditor::Image') }
+    let(:image) { instance_double('GraphicalEditor::Image', in?: true) }
     let(:args)  { %w(1 2 R) }
 
     it 'checks the arguments length' do
@@ -62,6 +62,11 @@ RSpec.describe GraphicalEditor::Command do
 
     it 'sets the image' do
       expect(image).to receive(:set_colour).with(GraphicalEditor::Cell.new(1, 2), 'R')
+      subject.L(args)
+    end
+
+    it 'checks the arguments are in bounds' do
+      expect(image).to receive(:in?).with(GraphicalEditor::Cell.new(1, 2)).and_return false
       subject.L(args)
     end
   end
