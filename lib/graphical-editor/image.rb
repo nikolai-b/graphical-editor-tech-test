@@ -7,12 +7,12 @@ module GraphicalEditor
       setup_data
     end
 
-    def set_colour(col, row, colour)
-      @data[row][col] = colour
+    def set_colour(cell, colour)
+      @data[cell.row][cell.col] = colour
     end
 
-    def get_colour(col, row)
-      @data[row][col]
+    def get_colour(cell)
+      @data[cell.row][cell.col]
     end
 
     def show
@@ -21,8 +21,8 @@ module GraphicalEditor
       end
     end
 
-    def in?(col, row)
-      col > 0 && col <= cols && row > 0 && row <= rows
+    def in?(cell)
+      cell.col > 0 && cell.col <= cols && cell.row > 0 && cell.row <= rows
     end
 
     private

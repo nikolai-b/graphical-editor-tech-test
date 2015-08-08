@@ -61,7 +61,7 @@ RSpec.describe GraphicalEditor::Command do
     end
 
     it 'sets the image' do
-      expect(image).to receive(:set_colour).with(1, 2, 'R')
+      expect(image).to receive(:set_colour).with(GraphicalEditor::Cell.new(1, 2), 'R')
       subject.L(args)
     end
   end
@@ -97,20 +97,20 @@ RSpec.describe GraphicalEditor::Command do
     context 'with a complex image' do
       let(:image) { GraphicalEditor::Image.new(3, 4) }
       before do
-        image.set_colour(1, 1, 'R')
-        image.set_colour(1, 2, 'R')
-        image.set_colour(2, 2, 'R')
+        image.set_colour(GraphicalEditor::Cell.new(1, 1), 'R')
+        image.set_colour(GraphicalEditor::Cell.new(1, 2), 'R')
+        image.set_colour(GraphicalEditor::Cell.new(2, 2), 'R')
       end
 
       it 'fills in the colour region' do
         subject.F(%w(1 1 T))
-        expect(image.get_colour(1, 1)).to eq 'T'
-        expect(image.get_colour(1, 2)).to eq 'T'
-        expect(image.get_colour(2, 2)).to eq 'T'
+        expect(image.get_colour(GraphicalEditor::Cell.new(1, 1))).to eq 'T'
+        expect(image.get_colour(GraphicalEditor::Cell.new(1, 2))).to eq 'T'
+        expect(image.get_colour(GraphicalEditor::Cell.new(2, 2))).to eq 'T'
 
-        expect(image.get_colour(2, 1)).to eq 'O'
-        expect(image.get_colour(1, 3)).to eq 'O'
-        expect(image.get_colour(2, 3)).to eq 'O'
+        expect(image.get_colour(GraphicalEditor::Cell.new(2, 1))).to eq 'O'
+        expect(image.get_colour(GraphicalEditor::Cell.new(1, 3))).to eq 'O'
+        expect(image.get_colour(GraphicalEditor::Cell.new(2, 3))).to eq 'O'
       end
     end
   end

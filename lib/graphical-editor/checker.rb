@@ -16,5 +16,9 @@ module GraphicalEditor
         puts 'ERROR: Must have non-zero, numeric dimensions'
       end
     end
+
+    def check_bounds(cell)
+      @image.in?(cell.col, cell.row)
+    end
   end
 end

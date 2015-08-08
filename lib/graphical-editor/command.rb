@@ -2,8 +2,6 @@ module GraphicalEditor
   class Command
     include Checker
 
-    Cell = Struct.new(:col, :row)
-
     def initialize(image)
       @image = image
     end
@@ -28,15 +26,15 @@ module GraphicalEditor
     # Any other pixel which is the same colour as (X,Y) and shares a common side with any pixel in R also belongs to this region.
     def F(args)
       return unless check_dimensions(args, 3)
-      col, row = check_integers(args[0..1])
-      return unless row
+      cell = Cell.new *check_integers(args[0..1])
+      return unless cell
       new_colour = args[2]
-      existing_colour = @image.get_colour(col, row)
+      existing_colour = @image.get_colour(cell)
       return if existing_colour == new_colour
-      check_cells = [Cell.new(col, row)]
+      check_cells = [cell]
       until check_cells.empty?
         new_cells = fill(check_cells.pop, existing_colour, new_colour)
-        check_cells.push(*new_cells.select{ |cell| @image.in?(cell.col, cell.row)})
+        check_cells.push(*new_cells.select{ |cell| @image.in?(cell)})
       end
     end
 
@@ -55,9 +53,9 @@ module GraphicalEditor
     #L X Y C. Colours the pixel (X,Y) with colour C.
     def L(args)
       return unless check_dimensions(args, 3)
-      col, row = check_integers(args[0..1])
-      return unless row
-      @image.set_colour(col, row, args[2])
+      cell = Cell.new *check_integers(args[0..1])
+      return unless cell.row
+      @image.set_colour(cell, args[2])
     end
 
     #S. Show the contents of the current image
@@ -81,8 +79,8 @@ module GraphicalEditor
     end
 
     def fill(cell, existing_colour, new_colour)
-      if @image.get_colour(cell.col, cell.row) == existing_colour
-        @image.set_colour(cell.col, cell.row, new_colour)
+      if @image.get_colour(cell) == existing_colour
+        @image.set_colour(cell, new_colour)
         [
           Cell.new(cell.col,   cell.row+1),
           Cell.new(cell.col,   cell.row-1),
