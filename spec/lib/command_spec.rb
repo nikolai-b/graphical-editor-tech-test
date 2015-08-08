@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe GraphicalEditor::Command do
+  subject { described_class.new nil }
+
   describe '#route' do
     %i(I C L V H F S X).each do |cmd|
       it "correctly routes #{cmd}" do
@@ -25,16 +27,22 @@ RSpec.describe GraphicalEditor::Command do
   end
 
   describe '#I' do
-    [%w(1 b2), %w(.9 1)].each do |dimensions|
-      it 'returns warning for invalid dimensions' do
-        expect { subject.I(dimensions) }.to output("ERROR: Must have non-zero, numeric dimensions\n").to_stdout
-      end
+    let(:args) { %w(1 2) }
+    it 'checks the arguments length' do
+      expect(subject).to receive(:check_dimensions).with(args, 2)
+      subject.I(args)
     end
 
-    [%w(1 2 3), %w(1.2)].each do |dimensions|
-      it 'returns warning for incorrect number of dimensions' do
-        expect { subject.I(dimensions) }.to output("ERROR: Command I must have 2 arguments\n").to_stdout
-      end
+    it 'checks the arguments are integers' do
+      expect(subject).to receive(:check_integers).with(args)
+      subject.I(args)
     end
+
+    it 'sets the image' do
+      expect(subject.instance_variable_get(:@image)).to be_nil
+      subject.I(args)
+      expect(subject.instance_variable_get(:@image)).to be_a GraphicalEditor::Image
+    end
+
   end
 end

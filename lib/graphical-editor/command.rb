@@ -2,6 +2,10 @@ module GraphicalEditor
   class Command
     include Checker
 
+    def initialize(image)
+      @image = nil
+    end
+
     def route(line)
       line = line.strip.upcase.split(/\s+/)
       command = line[0].to_sym
@@ -32,6 +36,7 @@ module GraphicalEditor
       return unless check_dimensions(args, 2)
       cols, rows = check_integers(args)
       return unless rows
+      @image = Image.new(cols, rows)
     end
 
     #L X Y C. Colours the pixel (X,Y) with colour C.
@@ -53,7 +58,7 @@ module GraphicalEditor
     private
 
     def routable_methods
-      @routable_methods ||= public_methods(false) - [:route, :public_send]
+      @routable_methods ||= public_methods(false).select { |meth| meth.length < 2 }
     end
   end
 end
