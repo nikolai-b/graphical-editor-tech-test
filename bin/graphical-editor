@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+libPath = File.join(File.dirname(__FILE__), '..', 'lib')
+$LOAD_PATH.unshift(libPath) if File.directory?(libPath) && !$LOAD_PATH.include?(libPath)
+
+require 'graphical-editor'
+
+GraphicalEditor::Runner.start

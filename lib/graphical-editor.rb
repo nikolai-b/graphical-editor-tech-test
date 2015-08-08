@@ -1,0 +1,1 @@
+require "graphical-editor/runner"
