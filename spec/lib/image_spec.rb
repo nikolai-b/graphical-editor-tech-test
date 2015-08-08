@@ -23,6 +23,12 @@ RSpec.describe GraphicalEditor::Image do
     expect(data[2][1]).to eq 'R'
   end
 
+  it 'gets the colour of the data' do
+    expect(subject.get_colour(1, 2)).to eq 'O'
+    subject.set_colour(1, 2, 'R')
+    expect(subject.get_colour(1, 2)).to eq 'R'
+  end
+
   it 'shows the data' do
     expect { subject.show }.to output("OOO\n"*5).to_stdout
   end

@@ -11,6 +11,10 @@ module GraphicalEditor
       @data[row][col] = colour
     end
 
+    def get_colour(col, row)
+      @data[row][col]
+    end
+
     def show
       (1..rows).each do |row|
         puts @data[row].values.join
