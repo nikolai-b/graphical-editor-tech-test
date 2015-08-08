@@ -7,6 +7,10 @@ module GraphicalEditor
       setup_data
     end
 
+    def set_colour(col, row, colour)
+      @data[col][row] = colour
+    end
+
     private
 
     def setup_data

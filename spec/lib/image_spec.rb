@@ -13,4 +13,13 @@ RSpec.describe GraphicalEditor::Image do
     expect(data.size).to eq 3
     expect(data[1].size).to eq 5
   end
+
+  it 'sets the colours initial data colours' do
+    expect(data[1][2]).to eq 'O'
+  end
+
+  it 'sets the colours of the data' do
+    subject.set_colour(1, 2, 'R')
+    expect(data[1][2]).to eq 'R'
+  end
 end
