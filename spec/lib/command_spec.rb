@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe GraphicalEditor::Command do
-  subject { described_class.new nil }
+  subject     { described_class.new image }
+  let(:image) { nil }
 
   describe '#route' do
     %i(I C L V H F S X).each do |cmd|
@@ -46,7 +47,9 @@ RSpec.describe GraphicalEditor::Command do
   end
 
   describe '#L' do
-    let(:args)         { %w(1 2 R) }
+    let(:image) { instance_double('GraphicalEditor::Image') }
+    let(:args)  { %w(1 2 R) }
+
     it 'checks the arguments length' do
       expect(subject).to receive(:check_dimensions).with(args, 3)
       subject.L(args)
@@ -54,6 +57,11 @@ RSpec.describe GraphicalEditor::Command do
 
     it 'checks the arguments are integers' do
       expect(subject).to receive(:check_integers).with(%w(1 2))
+      subject.L(args)
+    end
+
+    it 'sets the image' do
+      expect(image).to receive(:set_colour).with(1, 2, 'R')
       subject.L(args)
     end
   end

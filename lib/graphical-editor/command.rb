@@ -3,7 +3,7 @@ module GraphicalEditor
     include Checker
 
     def initialize(image)
-      @image = nil
+      @image = image
     end
 
     def route(line)
@@ -42,8 +42,9 @@ module GraphicalEditor
     #L X Y C. Colours the pixel (X,Y) with colour C.
     def L(args)
       return unless check_dimensions(args, 3)
-      cols, rows = check_integers(args[0..1])
-      return unless rows
+      col, row = check_integers(args[0..1])
+      return unless row
+      @image.set_colour(col, row, args[2])
     end
 
     #S. Show the contents of the current image
