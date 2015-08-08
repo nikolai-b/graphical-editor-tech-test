@@ -74,4 +74,38 @@ RSpec.describe GraphicalEditor::Command do
       subject.S(nil)
     end
   end
+
+  describe '#F' do
+    let(:image_data) { image.instance_variable_get(:@data) }
+
+    context 'with a blank image' do
+      let(:image) { GraphicalEditor::Image.new(2, 3) }
+
+      it 'fills in the image' do
+        subject.F(%w(1 1 T))
+        image_values = image_data.values.map(&:values)
+        expect(image_values).to eq([%w(T T)]*3)
+      end
+    end
+
+    context 'with a complex image' do
+      let(:image) { GraphicalEditor::Image.new(3, 4) }
+      before do
+        image.set_colour(1, 1, 'R')
+        image.set_colour(1, 2, 'R')
+        image.set_colour(2, 2, 'R')
+      end
+
+      it 'fills in the colour region' do
+        subject.F(%w(1 1 T))
+        expect(image.get_colour(1, 1)).to eq 'T'
+        expect(image.get_colour(1, 2)).to eq 'T'
+        expect(image.get_colour(2, 2)).to eq 'T'
+
+        expect(image.get_colour(2, 1)).to eq 'O'
+        expect(image.get_colour(1, 3)).to eq 'O'
+        expect(image.get_colour(2, 3)).to eq 'O'
+      end
+    end
+  end
 end
