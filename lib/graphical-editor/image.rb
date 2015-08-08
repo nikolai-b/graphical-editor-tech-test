@@ -21,6 +21,10 @@ module GraphicalEditor
       end
     end
 
+    def in?(col, row)
+      col > 0 && col <= cols && row > 0 && row <= rows
+    end
+
     private
 
     def setup_data

@@ -32,4 +32,18 @@ RSpec.describe GraphicalEditor::Image do
   it 'shows the data' do
     expect { subject.show }.to output("OOO\n"*5).to_stdout
   end
+
+  describe '#in?' do
+    [[1,1], [3,5]].each do |dimensions|
+      it 'returns true if in image' do
+        expect(subject.in?(*dimensions)).to be true
+      end
+    end
+
+    [[3,6], [4,5], [1,0], [0,1]].each do |dimensions|
+      it 'returns false if greater in image' do
+        expect(subject.in?(*dimensions)).to be false
+      end
+    end
+  end
 end
