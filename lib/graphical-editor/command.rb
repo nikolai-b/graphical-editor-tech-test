@@ -27,7 +27,18 @@ module GraphicalEditor
     end
 
     #I M N. Create a new M x N image with all pixels coloured white (O).
-    def I(*args)
+    def I(args)
+      unless args.size == 2
+        puts 'ERROR: Must have two dimensions'
+        return
+      end
+
+      cols = args[0].to_i
+      rows = args[1].to_i
+      unless cols * rows > 0
+        puts 'ERROR: Must have non-zero numeric dimensions'
+        return
+      end
     end
 
     #L X Y C. Colours the pixel (X,Y) with colour C.
