@@ -1,5 +1,6 @@
 module GraphicalEditor
   class Command
+    include Checker
 
     def route(line)
       line = line.strip.upcase.split(/\s+/)
@@ -28,17 +29,9 @@ module GraphicalEditor
 
     #I M N. Create a new M x N image with all pixels coloured white (O).
     def I(args)
-      unless args.size == 2
-        puts 'ERROR: Must have two dimensions'
-        return
-      end
-
-      cols = args[0].to_i
-      rows = args[1].to_i
-      unless cols * rows > 0
-        puts 'ERROR: Must have non-zero numeric dimensions'
-        return
-      end
+      return unless check_dimensions(args, 2)
+      cols, rows = check_integers(args)
+      return unless rows
     end
 
     #L X Y C. Colours the pixel (X,Y) with colour C.

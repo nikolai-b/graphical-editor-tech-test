@@ -27,13 +27,13 @@ RSpec.describe GraphicalEditor::Command do
   describe '#I' do
     [%w(1 b2), %w(.9 1)].each do |dimensions|
       it 'returns warning for invalid dimensions' do
-        expect { subject.I(dimensions) }.to output("ERROR: Must have non-zero numeric dimensions\n").to_stdout
+        expect { subject.I(dimensions) }.to output("ERROR: Must have non-zero, numeric dimensions\n").to_stdout
       end
     end
 
     [%w(1 2 3), %w(1.2)].each do |dimensions|
       it 'returns warning for incorrect number of dimensions' do
-        expect { subject.I(dimensions) }.to output("ERROR: Must have two dimensions\n").to_stdout
+        expect { subject.I(dimensions) }.to output("ERROR: Command I must have 2 arguments\n").to_stdout
       end
     end
   end
