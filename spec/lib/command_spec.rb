@@ -86,6 +86,12 @@ RSpec.describe GraphicalEditor::Command do
         image_values = image_data.values.map(&:values)
         expect(image_values).to eq([%w(T T)]*3)
       end
+
+      it 'does nothing if new colour equals existing colour' do
+        subject.F(%w(1 1 O))
+        image_values = image_data.values.map(&:values)
+        expect(image_values).to eq([%w(O O)]*3)
+      end
     end
 
     context 'with a complex image' do

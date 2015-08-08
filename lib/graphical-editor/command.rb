@@ -31,10 +31,11 @@ module GraphicalEditor
       col, row = check_integers(args[0..1])
       return unless row
       new_colour = args[2]
-      old_colour = @image.get_colour(col, row)
+      existing_colour = @image.get_colour(col, row)
+      return if existing_colour == new_colour
       check_cells = [Cell.new(col, row)]
       until check_cells.empty?
-        new_cells = fill(check_cells.pop, old_colour, new_colour)
+        new_cells = fill(check_cells.pop, existing_colour, new_colour)
         check_cells.push(*new_cells.select{ |cell| @image.in?(cell.col, cell.row)})
       end
     end
@@ -79,8 +80,8 @@ module GraphicalEditor
       @routable_methods ||= public_methods(false).select { |meth| meth.length < 2 }
     end
 
-    def fill(cell, old_colour, new_colour)
-      if @image.get_colour(cell.col, cell.row) == old_colour
+    def fill(cell, existing_colour, new_colour)
+      if @image.get_colour(cell.col, cell.row) == existing_colour
         @image.set_colour(cell.col, cell.row, new_colour)
         [
           Cell.new(cell.col,   cell.row+1),
