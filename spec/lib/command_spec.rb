@@ -119,4 +119,11 @@ RSpec.describe GraphicalEditor::Command do
       end
     end
   end
+
+  describe '#X' do
+    it 'sets the image' do
+      expect{ subject.X(nil) }.to raise_error SystemExit
+    end
+  end
+
 end

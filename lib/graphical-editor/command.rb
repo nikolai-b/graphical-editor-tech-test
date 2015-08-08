@@ -74,6 +74,7 @@ module GraphicalEditor
 
     # X. Terminate the session
     def X(*args)
+      exit
     end
 
     private
