@@ -19,6 +19,7 @@ module GraphicalEditor
 
     # C. Clears the table, setting all pixels to white (O).
     def C(*args)
+      @image = Image.new(@image.cols, @image.rows) if @image
     end
 
     # F X Y C. Fill the region R with the colour C.

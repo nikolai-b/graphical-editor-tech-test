@@ -101,6 +101,7 @@ RSpec.describe GraphicalEditor::Command do
 
     context 'with a complex image' do
       let(:image) { GraphicalEditor::Image.new(3, 4) }
+
       before do
         image.set_colour(GraphicalEditor::Cell.new(1, 1), 'R')
         image.set_colour(GraphicalEditor::Cell.new(1, 2), 'R')
@@ -121,9 +122,22 @@ RSpec.describe GraphicalEditor::Command do
   end
 
   describe '#X' do
-    it 'sets the image' do
-      expect{ subject.X(nil) }.to raise_error SystemExit
-    end
+    it { expect{ subject.X(nil) }.to raise_error SystemExit }
   end
 
+  describe '#C' do
+    it 'does nothing if no image is set' do
+      subject.C(nil)
+      expect(subject.instance_variable_get(:@image)).to be_nil
+    end
+
+    context 'with an image' do
+      let(:image) { GraphicalEditor::Image.new(3, 4) }
+
+      it 'resets to a new image' do
+        expect(GraphicalEditor::Image).to receive(:new).with(3, 4)
+        subject.C(nil)
+      end
+    end
+  end
 end
