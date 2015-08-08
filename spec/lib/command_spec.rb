@@ -66,4 +66,12 @@ RSpec.describe GraphicalEditor::Command do
     end
   end
 
+  describe '#S' do
+    let(:image) { instance_double('GraphicalEditor::Image') }
+    it 'sets the image' do
+      allow(subject).to receive(:puts)
+      expect(image).to receive(:show)
+      subject.S(nil)
+    end
+  end
 end
