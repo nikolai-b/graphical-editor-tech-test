@@ -40,7 +40,10 @@ module GraphicalEditor
     end
 
     #L X Y C. Colours the pixel (X,Y) with colour C.
-    def L(*args)
+    def L(args)
+      return unless check_dimensions(args, 3)
+      cols, rows = check_integers(args[0..1])
+      return unless rows
     end
 
     #S. Show the contents of the current image

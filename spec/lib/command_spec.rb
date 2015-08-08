@@ -43,6 +43,19 @@ RSpec.describe GraphicalEditor::Command do
       subject.I(args)
       expect(subject.instance_variable_get(:@image)).to be_a GraphicalEditor::Image
     end
-
   end
+
+  describe '#L' do
+    let(:args)         { %w(1 2 R) }
+    it 'checks the arguments length' do
+      expect(subject).to receive(:check_dimensions).with(args, 3)
+      subject.L(args)
+    end
+
+    it 'checks the arguments are integers' do
+      expect(subject).to receive(:check_integers).with(%w(1 2))
+      subject.L(args)
+    end
+  end
+
 end
