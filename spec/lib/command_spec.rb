@@ -28,47 +28,9 @@ RSpec.describe GraphicalEditor::Command do
   end
 
   describe '#I' do
-    let(:args) { %w(1 2) }
-    it 'checks the arguments length' do
-      expect(subject).to receive(:check_dimensions).with(args, 2)
-      subject.I(args)
-    end
-
-    it 'checks the arguments are integers' do
-      expect(subject).to receive(:check_integers).with(args)
-      subject.I(args)
-    end
-
-    it 'sets the image' do
-      expect(subject.instance_variable_get(:@image)).to be_nil
-      subject.I(args)
-      expect(subject.instance_variable_get(:@image)).to be_a GraphicalEditor::Image
-    end
   end
 
   describe '#L' do
-    let(:image) { instance_double('GraphicalEditor::Image', in?: true) }
-    let(:args)  { %w(1 2 R) }
-
-    it 'checks the arguments length' do
-      expect(subject).to receive(:check_dimensions).with(args, 3)
-      subject.L(args)
-    end
-
-    it 'checks the arguments are integers' do
-      expect(subject).to receive(:check_integers).with(%w(1 2))
-      subject.L(args)
-    end
-
-    it 'sets the image' do
-      expect(image).to receive(:set_colour).with(GraphicalEditor::Cell.new(1, 2), 'R')
-      subject.L(args)
-    end
-
-    it 'checks the arguments are in bounds' do
-      expect(image).to receive(:in?).with(GraphicalEditor::Cell.new(1, 2)).and_return false
-      subject.L(args)
-    end
   end
 
   describe '#S' do
@@ -81,44 +43,6 @@ RSpec.describe GraphicalEditor::Command do
   end
 
   describe '#F' do
-    let(:image_data) { image.instance_variable_get(:@data) }
-
-    context 'with a blank image' do
-      let(:image) { GraphicalEditor::Image.new(2, 3) }
-
-      it 'fills in the image' do
-        subject.F(%w(1 1 T))
-        image_values = image_data.values.map(&:values)
-        expect(image_values).to eq([%w(T T)]*3)
-      end
-
-      it 'does nothing if new colour equals existing colour' do
-        subject.F(%w(1 1 O))
-        image_values = image_data.values.map(&:values)
-        expect(image_values).to eq([%w(O O)]*3)
-      end
-    end
-
-    context 'with a complex image' do
-      let(:image) { GraphicalEditor::Image.new(3, 4) }
-
-      before do
-        image.set_colour(GraphicalEditor::Cell.new(1, 1), 'R')
-        image.set_colour(GraphicalEditor::Cell.new(1, 2), 'R')
-        image.set_colour(GraphicalEditor::Cell.new(2, 2), 'R')
-      end
-
-      it 'fills in the colour region' do
-        subject.F(%w(1 1 T))
-        expect(image.get_colour(GraphicalEditor::Cell.new(1, 1))).to eq 'T'
-        expect(image.get_colour(GraphicalEditor::Cell.new(1, 2))).to eq 'T'
-        expect(image.get_colour(GraphicalEditor::Cell.new(2, 2))).to eq 'T'
-
-        expect(image.get_colour(GraphicalEditor::Cell.new(2, 1))).to eq 'O'
-        expect(image.get_colour(GraphicalEditor::Cell.new(1, 3))).to eq 'O'
-        expect(image.get_colour(GraphicalEditor::Cell.new(2, 3))).to eq 'O'
-      end
-    end
   end
 
   describe '#X' do
@@ -126,18 +50,5 @@ RSpec.describe GraphicalEditor::Command do
   end
 
   describe '#C' do
-    it 'does nothing if no image is set' do
-      subject.C(nil)
-      expect(subject.instance_variable_get(:@image)).to be_nil
-    end
-
-    context 'with an image' do
-      let(:image) { GraphicalEditor::Image.new(3, 4) }
-
-      it 'resets to a new image' do
-        expect(GraphicalEditor::Image).to receive(:new).with(3, 4)
-        subject.C(nil)
-      end
-    end
   end
 end
